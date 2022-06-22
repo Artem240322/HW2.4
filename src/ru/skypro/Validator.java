@@ -33,11 +33,14 @@ public class Validator {
     private static boolean containsValidSymbols(String s) {
         char[] symbols = s.toCharArray();
         char[] validSymbols = VALID_SYMBOLS.toCharArray();
-        for (int i = 0; i < symbols.length; i++) {
-            for (int j = 0; j < validSymbols.length; j++) {
-
+        for (char symbol : symbols) {
+            for (char validSymbol : validSymbols) {
+                if (symbol != validSymbol) {
+                    return false;
+                }
             }
         }
+     return true;
     }
 }
 
