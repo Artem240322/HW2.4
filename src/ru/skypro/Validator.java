@@ -24,22 +24,28 @@ public class Validator {
     private static void validate(String login,
                                  String password,
                                  String confirmPassword) throws WrongLoginException, WrongPasswordException {
-        if (Objects.isNull(login) || login.length() > 20) {
-            throw new WrongLoginException("Длинна логина должна быть < 20");
+        if (Objects.isNull(login) || login.length() > 20 || !containsValidSymbols(login)) {
+            throw new WrongLoginException("Длинна логина должна быть <= 20");
         }
-
+        if (isNotValidPassword(password) || isNotValidPassword(confirmPassword)) {
+            throw new WrongPasswordException("Длинна пароля должна быть <20");
+        }
+        if (!password.equals(confirmPassword)) {
+            throw new WrongPasswordException("Пароли должны совпадать!");
+        }
+    }
+    private static boolean isNotValidPassword(String password) {
+        return Objects.isNull(password) || password.length() >= 20 || !containsValidSymbols(password);
     }
 
     private static boolean containsValidSymbols(String s) {
         char[] symbols = s.toCharArray();
-        char[] validSymbols = VALID_SYMBOLS.toCharArray();
         for (char symbol : symbols) {
-            for (char validSymbol : validSymbols) {
-                if (symbol != validSymbol) {
-                    return false;
+            if (!VALID_SYMBOLS.contains(String.valueOf(symbol))) {
+                return false;
+
                 }
             }
-        }
      return true;
     }
 }
